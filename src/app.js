@@ -2,7 +2,7 @@ import axios from 'axios';
 import jquery from 'jquery';
 import notiflix from 'notiflix';
 
-const API_KEY = 'u_wv6fh6yqul';
+const API_KEY = '41213110-775d8605f206f9e1ea3c7d6a2';
 const form = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
