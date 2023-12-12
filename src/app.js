@@ -53,7 +53,7 @@ loadMoreBtn.addEventListener('click', async function () {
   try {
     const response = await axios.get('https://pixabay.com/api/', {
       params: {
-        key: API_KEY,
+        key: u_wv6fh6yqul,
         q: searchQuery,
         image_type: 'photo',
         orientation: 'horizontal',
