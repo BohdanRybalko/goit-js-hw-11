@@ -1,4 +1,8 @@
-const API_KEY = 'your_pixabay_api_key';
+import axios from 'axios';
+import jquery from 'jquery';
+import notiflix from 'notiflix';
+
+const API_KEY = 'u_wv6fh6yqul';
 const form = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
@@ -53,7 +57,7 @@ loadMoreBtn.addEventListener('click', async function () {
   try {
     const response = await axios.get('https://pixabay.com/api/', {
       params: {
-        key: u_wv6fh6yqul,
+        key: API_KEY,
         q: searchQuery,
         image_type: 'photo',
         orientation: 'horizontal',
