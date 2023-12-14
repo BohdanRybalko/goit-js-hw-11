@@ -1,5 +1,4 @@
 import axios from 'axios';
-import jquery from 'jquery';
 import notiflix from 'notiflix';
 
 const API_KEY = '41213110-775d8605f206f9e1ea3c7d6a2';
@@ -17,6 +16,27 @@ form.addEventListener('submit', async function (e) {
   }
 
   try {
+    await fetchImages(searchQuery, 1);
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    notiflix.Notify.failure('Something went wrong. Please try again later.');
+  }
+});
+
+loadMoreBtn.addEventListener('click', async function () {
+  const searchQuery = form.elements.searchQuery.value.trim();
+
+  try {
+    await fetchImages(searchQuery, page + 1);
+    page++;
+  } catch (error) {
+    console.error('Error fetching more images:', error);
+    notiflix.Notify.failure('Something went wrong. Please try again later.');
+  }
+});
+
+async function fetchImages(searchQuery, pageNum) {
+  try {
     const response = await axios.get('https://pixabay.com/api/', {
       params: {
         key: API_KEY,
@@ -24,7 +44,7 @@ form.addEventListener('submit', async function (e) {
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
-        page: 1,
+        page: pageNum,
         per_page: 40,
       },
     });
@@ -38,59 +58,26 @@ form.addEventListener('submit', async function (e) {
       return;
     }
 
-    gallery.innerHTML = '';
-
     renderImages(data.hits);
 
-    loadMoreBtn.style.display = 'block';
-
-    page = 1;
-  } catch (error) {
-    console.error('Error fetching images:', error);
-    notiflix.Notify.failure('Something went wrong. Please try again later.');
-  }
-});
-
-loadMoreBtn.addEventListener('click', async function () {
-  const searchQuery = form.elements.searchQuery.value.trim();
-
-  try {
-    const response = await axios.get('https://pixabay.com/api/', {
-      params: {
-        key: API_KEY,
-        q: searchQuery,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: true,
-        page: page + 1,
-        per_page: 40,
-      },
-    });
-
-    const { data } = response;
-
-    if (data.hits.length === 0) {
-      notiflix.Notify.info(
-        "We're sorry, but you've reached the end of search results."
-      );
+    if (data.hits.length < 40) {
       loadMoreBtn.style.display = 'none';
-      return;
+    } else {
+      loadMoreBtn.style.display = 'block';
     }
-    renderImages(data.hits);
 
-    page++;
+    if (pageNum === 1) {
+      page = 1;
+    }
   } catch (error) {
-    console.error('Error fetching more images:', error);
-    notiflix.Notify.failure('Something went wrong. Please try again later.');
+    throw error;
   }
-});
+}
 
 function renderImages(images) {
-  images.forEach(image => {
-    const card = document.createElement('div');
-    card.classList.add('photo-card');
-
-    card.innerHTML = `
+  const cardsHTML = images.map(
+    image => `
+    <div class="photo-card">
       <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
       <div class="info">
         <p class="info-item"><b>Likes:</b> ${image.likes}</p>
@@ -98,8 +85,9 @@ function renderImages(images) {
         <p class="info-item"><b>Comments:</b> ${image.comments}</p>
         <p class="info-item"><b>Downloads:</b> ${image.downloads}</p>
       </div>
-    `;
+    </div>
+  `
+  );
 
-    gallery.appendChild(card);
-  });
+  gallery.innerHTML = cardsHTML.join('');
 }
