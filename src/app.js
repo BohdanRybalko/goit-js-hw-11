@@ -16,8 +16,10 @@ form.addEventListener('submit', async function (e) {
   }
 
   try {
-    const imageData = await fetchImages(searchQuery, 1);
+    const imageData = await fetchImages(searchQuery, page);
     handleImageData(imageData);
+
+    page = 1;
   } catch (error) {
     console.error('Error fetching images:', error);
     notiflix.Notify.failure('Something went wrong. Please try again later.');
@@ -26,9 +28,9 @@ form.addEventListener('submit', async function (e) {
 
 loadMoreBtn.addEventListener('click', async function () {
   const searchQuery = form.elements.searchQuery.value.trim();
-
+  page += 1;
   try {
-    const imageData = await fetchImages(searchQuery, page + 1);
+    const imageData = await fetchImages(searchQuery, page);
     handleImageData(imageData);
     page++;
   } catch (error) {
