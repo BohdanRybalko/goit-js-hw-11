@@ -15,7 +15,7 @@ function renderImages(images) {
   `
   );
 
-  gallery.insertAdjacentHTML = cardsHTML.join('');
+  gallery.insertAdjacentHTML('beforeend', cardsHTML.join(''));
 }
 
 export { renderImages };
