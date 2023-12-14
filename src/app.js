@@ -14,12 +14,11 @@ form.addEventListener('submit', async function (e) {
   if (!searchQuery) {
     return;
   }
-
+  page = 1;
+  gallery.innerHTML = '';
   try {
     const imageData = await fetchImages(searchQuery, page);
     handleImageData(imageData);
-
-    page = 1;
   } catch (error) {
     console.error('Error fetching images:', error);
     notiflix.Notify.failure('Something went wrong. Please try again later.');
@@ -32,7 +31,6 @@ loadMoreBtn.addEventListener('click', async function () {
   try {
     const imageData = await fetchImages(searchQuery, page);
     handleImageData(imageData);
-    page++;
   } catch (error) {
     console.error('Error fetching more images:', error);
     notiflix.Notify.failure('Something went wrong. Please try again later.');

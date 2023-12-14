@@ -15,7 +15,7 @@ function renderImages(images) {
   `
   );
 
-  gallery.innerHTML = cardsHTML.join('');
+  gallery.insertAdjacentHTML = cardsHTML.join('');
 }
 
 export { renderImages };
