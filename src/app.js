@@ -47,8 +47,6 @@ function handleImageData(data) {
     return;
   }
 
-  gallery.innerHTML = '';
-
   renderImages(data.hits);
 
   if (data.hits.length < 40) {
