@@ -4,7 +4,7 @@ import { fetchImages } from './api';
 
 const form = document.getElementById('search-form');
 const loadMoreBtn = document.querySelector('.load-more');
-const gallery = document.getElementById('gallery');
+const gallery = document.querySelector('.gallery');
 let page = 1;
 
 form.addEventListener('submit', async function (e) {
